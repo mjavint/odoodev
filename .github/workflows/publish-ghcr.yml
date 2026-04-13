@@ -3,7 +3,7 @@ name: Publicar imagen Docker en GHCR
 on:
     push:
         branches:
-            - main
+            - "**"
         paths:
             - Dockerfile
             - README.md
@@ -46,11 +46,10 @@ jobs:
               with:
                   images: ${{ env.IMAGE_NAME }}
                   tags: |
-                      type=raw,value=latest
-                      type=raw,value=3.12-slim-bookworm
-                      type=sha,format=short
+                      type=raw,value=latest,enable={{is_default_branch}}
                       type=ref,event=branch
-                      type=ref,event=tag
+                        type=sha,format=short
+                        type=ref,event=tag
 
             - name: Build and push
               uses: docker/build-push-action@v6
