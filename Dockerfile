@@ -115,6 +115,9 @@ RUN npm install -g rtlcss && \
 # Install OpenCode CLI
 RUN curl -fsSL https://opencode.ai/install | bash
 
+# Install Odoo Development Framework (ODF) globally using OpenCode CLI
+RUN curl -fsSL https://raw.githubusercontent.com/antoniodavid/odf-agent-team/main/install.sh | bash
+
 # Copy uv binary from official image
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
