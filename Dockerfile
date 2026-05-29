@@ -112,9 +112,6 @@ RUN npm install -g rtlcss && \
     # Cleanup npm cache
     npm cache clean --force
 
-# Install OpenCode CLI
-RUN curl -fsSL https://opencode.ai/install | bash
-
 # Copy uv binary from official image
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
@@ -162,6 +159,10 @@ RUN sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highligh
     && echo 'SAVEHIST=10000' >> "/home/$USERNAME/.zshrc" \
     && echo 'setopt SHARE_HISTORY' >> "/home/$USERNAME/.zshrc" \
     && touch "/commandhistory/.zsh_history"
+
+# Install OpenCode CLI
+RUN curl -fsSL https://opencode.ai/install | bash
+ENV PATH="/home/${USERNAME}/.config/opencode/bin:${PATH}"
 
 # Exponer volumen para datos persistentes de Odoo
 VOLUME ["$ODOO_DATA"]
