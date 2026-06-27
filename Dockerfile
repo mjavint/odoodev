@@ -28,7 +28,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     # Development tools
     build-essential \
     python3-dev \
-    npm \
     openssh-client \
     rsync \
     gettext \
@@ -106,6 +105,21 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     rm -f wkhtmltox.deb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Instalar dependencias, añadir el repositorio de NodeSource e instalar Node 22
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    # Añadir la clave GPG de NodeSource
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && mkdir -p /etc/apt/keyrings \
+    # Añadir el repositorio de Node.js 22
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
+    # Actualizar e instalar Node.js
+    && apt-get update \
+    && apt-get install -y nodejs \
+    # Limpiar caché para reducir el tamaño de la imagen
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install rtlcss globally for RTL language support
 RUN npm install -g rtlcss && \
