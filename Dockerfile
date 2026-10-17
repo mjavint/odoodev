@@ -160,7 +160,7 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
     touch /commandhistory/.zsh_history
 
 # Install OpenCode CLI
-RUN curl -fsSL https://opencode.ai/install | bash
+RUN curl -fsSL https://opencode.ai/v2/install | bash
 
 # Change to workspace directory
 WORKDIR /workspace
